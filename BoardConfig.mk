@@ -17,7 +17,6 @@ TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=60  
 
 # Architecture
-# Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
@@ -44,17 +43,25 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x130000000
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
+TARGET_RECOVERY_INITRC := device/samsung/zeroflte/init.rc
 
 # Kernel Configs
 #TARGET_KERNEL_SOURCE := kernel/samsung/zeroflte
 #TARGET_KERNEL_CONFIG := exynos7420-zeroflte_tmo_defconfig
+#BOARD_KERNEL_IMAGE_NAME := Image
+#TARGET_KERNEL_CUSTOM_TOOLCHAIN := true
+#ARM_EABI_TOOLCHAIN := /builds/omni-5.1/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+#KERNEL_TOOLCHAIN_PREFIX := 
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
+TARGET_USES_UNCOMPRESSED_KERNEL := true
 #TARGET_KERNEL_SELINUX_CONFIG := 
 #TARGET_KERNEL_VARIANT_CONFIG :=
 #VARIANT_CONFIG :=
 #TIMA_DEFCONFIG :=
 TARGET_PREBUILT_KERNEL := device/samsung/zeroflte/kernAl
 
-BOARD_NEEDS_LZMA_MINIGZIP := true
+#BOARD_NEEDS_LZMA_MINIGZIP := true
 
 #TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun%d/file
 
@@ -79,6 +86,5 @@ TW_HAS_DOWNLOAD_MODE := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_MTP_DEVICE := /dev/usb_mtp_gadget
 #TW_INCLUDE_CRYPTO := true
-TW_DISABLE_TTF := true
 TW_EXCLUDE_SUPERSU := true
 TW_SCREEN_BLANK_ON_BOOT := true
