@@ -1,12 +1,14 @@
 MKBOOTIMG := device/samsung/zeroflte/mkbootimg
 
+FLASH_IMAGE_TARGET ?= $(PRODUCT_OUT)/recovery.tar
+
 ifdef TARGET_PREBUILT_DTB
 	BOARD_MKBOOTIMG_ARGS += --dt $(TARGET_PREBUILT_DTB)
 endif
 
 INSTALLED_RECOVERYIMAGE_TARGET := $(PRODUCT_OUT)/recovery.img
 $(INSTALLED_RECOVERYIMAGE_TARGET): $(recovery_ramdisk)
-	@echo ----- Making recovery image ------
+	@echo "------- Making recovery image -------"
 	$(hide) $(MKBOOTIMG) \
 		--kernel $(TARGET_PREBUILT_KERNEL) \
 		--ramdisk $(PRODUCT_OUT)/ramdisk-recovery.img \
@@ -15,6 +17,8 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(recovery_ramdisk)
 		--pagesize $(BOARD_KERNEL_PAGESIZE) \
 		$(BOARD_MKBOOTIMG_ARGS) \
 		-o $(INSTALLED_RECOVERYIMAGE_TARGET)
-	@echo ----- Made recovery image -------- $@
-	$(hide) tar -C $(PRODUCT_OUT) -H ustar -c recovery.img > $(PRODUCT_OUT)/recovery.tar
-	@echo ----- Made recovery image tar -------- $@.tar
+	@echo "------- Made recovery image: $@ -------"
+	$(hide) echo -n "SEANDROIDENFORCE" >> $(INSTALLED_RECOVERYIMAGE_TARGET)
+	@echo "------- Lied about SEAndroid state to Samsung bootloader -------"
+	$(hide) tar -C $(PRODUCT_OUT) -H ustar -c recovery.img > $(FLASH_IMAGE_TARGET)
+	@echo "------- Made flashable image: $(FLASH_IMAGE_TARGET) -------"
