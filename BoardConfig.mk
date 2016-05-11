@@ -77,3 +77,8 @@ TW_INCLUDE_CRYPTO := true
 #TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 #TWRP_INCLUDE_LOGCAT := true
 #TARGET_USES_LOGD := true
+
+# Init properties from bootloader version, ex. model info
+TARGET_UNIFIED_DEVICE := true
+TARGET_INIT_VENDOR_LIB := libinit_exynos
+TARGET_LIBINIT_DEFINES_FILE := device/samsung/zeroflte/init/init_zeroflte.cpp
