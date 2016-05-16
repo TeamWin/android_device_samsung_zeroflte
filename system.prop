@@ -1,6 +1,7 @@
 ro.hardware=samsungexynos7420
 ro.chipname=exynos7420
 ro.arch=exynos7420
+ro.boot.bootdevice=15570000.ufs
 ro.lcd_min_brightness=0
 ro.lcd_brightness=162
 ro.sf.lcd_density=560

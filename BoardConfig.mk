@@ -30,7 +30,7 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_USES_UNCOMPRESSED_KERNEL := true
 
-BOARD_KERNEL_CMDLINE := # Exynos does not support android boot image commandline arguments
+BOARD_KERNEL_CMDLINE := # Exynos doesn't take cmdline arguments from boot image
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 # 002RU = recovery kernel, 002KU = system kernel
@@ -65,7 +65,15 @@ TW_DEFAULT_BRIGHTNESS := 162
 TW_NO_USB_STORAGE := true
 TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
-TW_INCLUDE_CRYPTO := true
-#TW_INCLUDE_CRYPTO_SAMSUNG := true
 TW_NO_EXFAT_FUSE := true
 TW_MTP_DEVICE := "/dev/mtp_usb"
+TW_EXCLUDE_SUPERSU := true
+
+# Encryption support
+# - Only enable standard crypto for now to support AOSP/CM crypto
+TW_INCLUDE_CRYPTO := true
+#TW_INCLUDE_CRYPTO_SAMSUNG := true
+#TARGET_HW_DISK_ENCRYPTION := true
+#TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+#TWRP_INCLUDE_LOGCAT := true
+#TARGET_USES_LOGD := true
