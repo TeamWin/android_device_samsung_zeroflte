@@ -1,8 +1,12 @@
-/boot		emmc		/dev/block/platform/15570000.ufs/by-name/BOOT
-/recovery		emmc		/dev/block/platform/15570000.ufs/by-name/RECOVERY
-/system		ext4		/dev/block/platform/15570000.ufs/by-name/SYSTEM
-/data		ext4		/dev/block/platform/15570000.ufs/by-name/USERDATA	flags=encryptable=footer;length=-20480
-/cache		ext4		/dev/block/platform/15570000.ufs/by-name/CACHE
-/modem		emmc		/dev/block/platform/15570000.ufs/by-name/RADIO	flags=backup=1;display="Modem"
-/efs			ext4		/dev/block/platform/15570000.ufs/by-name/EFS		flags=backup=1;display="EFS"
-/usbstorage	vfat		/dev/block/sdd1 /dev/block/sdd				flags=display="USB Storage";storage;wipeingui;removable
+/boot		emmc		/dev/block/platform/15570000.ufs/by-name/BOOT		flags=display="Boot";backup=1;flashimg=1
+/recovery	emmc		/dev/block/platform/15570000.ufs/by-name/RECOVERY	flags=display="Recovery";backup=1;flashimg=1
+/cache		ext4		/dev/block/platform/15570000.ufs/by-name/CACHE		flags=display="Cache";backup=1
+/data		ext4		/dev/block/platform/15570000.ufs/by-name/USERDATA	flags=display="Data";backup=1;encryptable=footer;length=-20480
+/storage	ext4		/data/media/0						flags=display="Internal Storage";backup=1;usermrf;fsflags="bind";removable
+/system		ext4		/dev/block/platform/15570000.ufs/by-name/SYSTEM		flags=display="System";backup=1
+/efs		ext4		/dev/block/platform/15570000.ufs/by-name/EFS		flags=display="EFS";backup=1
+/modem		emmc		/dev/block/platform/15570000.ufs/by-name/RADIO		flags=display="Modem";backup=1
+/sbfs		ext4		/dev/block/platform/15570000.ufs/by-name/SBFS		flags=display="SBFS"
+
+# External Storage
+/usb-otg	vfat		/dev/block/sdd1		/dev/block/sdd			flags=display="USB Storage";storage;wipeingui;removable
