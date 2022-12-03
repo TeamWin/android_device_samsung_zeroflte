@@ -1,16 +1,23 @@
-USE_CAMERA_STUB := true
+#
+# Copyright (C) 2022 The OrangeFox Recovery Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
-TARGET_NO_BOOTLOADER := true
-TARGET_BOOTLOADER_BOARD_NAME := samsungexynos7420
+DEVICE_PATH := device/samsung/zerolte
 
-# Platform
-TARGET_BOARD_PLATFORM := exynos7420
-TARGET_BOARD_PLATFORM_GPU := mali-t760mp8
-
-# Flags
-#TARGET_GLOBAL_CFLAGS +=
-#TARGET_GLOBAL_CPPFLAGS +=
-#COMMON_GLOBAL_CFLAGS +=
+# For building with minimal manifest
+ALLOW_MISSING_DEPENDENCIES := true
 
 # Architecture
 TARGET_ARCH := arm64
@@ -26,36 +33,51 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 
-TARGET_KERNEL_ARCH := arm64
-TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_USES_UNCOMPRESSED_KERNEL := true
+TARGET_USES_64_BIT_BINDER := true
 
-BOARD_KERNEL_CMDLINE := # Exynos doesn't take cmdline arguments from boot image
-BOARD_KERNEL_BASE := 0x10000000
+# Kernel
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
+TARGET_PREBUILT_DT := $(DEVICE_PATH)/prebuilt/dt.img
+BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 2048
-# 002RU = recovery kernel, 002KU = system kernel
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --board SYSMAGIC002RU
+BOARD_RAMDISK_OFFSET := 0x01000000
+BOARD_KERNEL_TAGS_OFFSET := 0x00000100
+BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --dt $(TARGET_PREBUILT_DT)
+BOARD_KERNEL_IMAGE_NAME := Image.gz
 
-BOARD_BOOTIMAGE_PARTITION_SIZE     := 0x001C00000
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x002200000
-BOARD_SYSTEMIMAGE_PARTITION_SIZE   := 0x10E000000
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x641BFB000 #0x641C00000 - 20480 (footer)
-BOARD_CACHEIMAGE_PARTITION_SIZE    := 0x012C00000
-BOARD_FLASH_BLOCK_SIZE := 131072
+# Platform
+TARGET_BOARD_PLATFORM := exynos7420
 
-TARGET_PREBUILT_KERNEL := device/samsung/zeroflte/Image
-TARGET_PREBUILT_DTB := device/samsung/zeroflte/dtb.img
-
-# Use this flag if the board has a ext4 partition larger than 2gb
+# File systems
 BOARD_HAS_LARGE_FILESYSTEM := true
+BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-BOARD_SUPPRESS_SECURE_ERASE := true
-BOARD_CUSTOM_BOOTIMG_MK :=  device/samsung/zeroflte/bootimg.mk
 
-# TWRP specific build flags
-TW_THEME := portrait_hdpi
+# Partitions
+BOARD_FLASH_BLOCK_SIZE := 131072
+BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432        
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 33554432
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2684354560
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 12211698688
+BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432 
+BOARD_CACHEIMAGE_PARTITION_SIZE := 265289728
+
+# Encryption
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := 2099-12-31
+PLATFORM_VERSION := 16.1.0
+
+# Recovery
+#LZMA_RAMDISK_TARGETS := recovery
 RECOVERY_SDCARD_ON_DATA := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
+
+# TWRP Configuration
+TW_THEME := portrait_hdpi
 BOARD_HAS_NO_REAL_SDCARD := true
 TARGET_RECOVERY_PIXEL_FORMAT := "ABGR_8888"
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/15400000.usb/15400000.dwc3/gadget/lun%d/file"
@@ -66,19 +88,7 @@ TW_NO_USB_STORAGE := true
 TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
 TW_NO_EXFAT_FUSE := true
-TW_MTP_DEVICE := "/dev/mtp_usb"
-TW_EXCLUDE_SUPERSU := true
 
-# Encryption support
-# - Only enable standard crypto for now to support AOSP/CM crypto
-TW_INCLUDE_CRYPTO := true
-#TW_INCLUDE_CRYPTO_SAMSUNG := true
-#TARGET_HW_DISK_ENCRYPTION := true
-#TARGET_KEYMASTER_WAIT_FOR_QSEE := true
-#TWRP_INCLUDE_LOGCAT := true
-#TARGET_USES_LOGD := true
-
-# Init properties from bootloader version, ex. model info
-TARGET_UNIFIED_DEVICE := true
-TARGET_INIT_VENDOR_LIB := libinit_exynos
-TARGET_LIBINIT_DEFINES_FILE := device/samsung/zeroflte/init/init_zeroflte.cpp
+# Debug
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
