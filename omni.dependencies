@@ -1,8 +1,2 @@
 [
-	{
-		"remote":"github",
-		"repository":"jcadduono/android_device_exynos_common",
-		"target_path":"device/exynos/common",
-		"revision":"android-6.0"
-	}
 ]
